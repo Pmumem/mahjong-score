@@ -68,8 +68,6 @@ void displayScore(int hu) {
       M5.Lcd.printf("(%4d)\n", (int)(ceil(calScore(hu, i, false) / 300.0) * 100));
     }
   }
-
-  return ;
 }
 
 int calScore(int hu, int han, bool isChild) {
