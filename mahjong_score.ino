@@ -1,7 +1,7 @@
 #include <M5StickC.h>
 
 void displayScore(int hu);
-int calScoreLon(int hu, int han, bool isChild);
+int calScore(int hu, int han, bool isChild);
 
 void setup() {
   // put your setup code here, to run once:
@@ -9,6 +9,9 @@ void setup() {
   M5.Lcd.setRotation(1);
   M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setTextSize(1);
+  M5.Lcd.printf("\n\n\n          Mahjong\n");
+  M5.Lcd.printf("           Score\n\n\n");
+  M5.Lcd.print("     PRESS HOME_BUTTON");
 
   pinMode(M5_BUTTON_HOME, INPUT);
   pinMode(M5_BUTTON_RST, INPUT);
@@ -34,23 +37,42 @@ void loop() {
     oldState = HIGH;
   }
   if (digitalRead(M5_BUTTON_RST) == LOW) {
-    M5.Lcd.println("Hello");
+    cnt = 0;
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(0, 2);
+    M5.Lcd.printf("\n\n\n          Mahjong\n");
+    M5.Lcd.printf("           Score\n\n\n");
+    M5.Lcd.print("     PRESS HOME BUTTON");
+    
   }
 }
 
 void displayScore(int hu) {
   M5.Lcd.fillScreen(BLACK);
-  M5.Lcd.setCursor(40, 0, 2);
-  M5.Lcd.printf("%d\n", hu);
+  M5.Lcd.setCursor(0, 2);
+  M5.Lcd.printf("%6d     C          P\n", hu);
   int i;
   for (i = 1; i < 5; i++) {
-    M5.Lcd.printf("%4d%9d%9d\n", i, calScoreLon(hu, i, true), calScoreLon(hu, i, false));
+    M5.Lcd.printf("%3d", i);
+    if (hu == 20 && i == 1) {
+      M5.Lcd.print("        -");
+      M5.Lcd.println("          -");
+      M5.Lcd.print("      ");
+      M5.Lcd.print("  ( -, - )  ");
+      M5.Lcd.println("  ( - )");
+    } else {
+      M5.Lcd.printf("%10d", calScore(hu, i, true));
+      M5.Lcd.printf("%11d\n", calScore(hu, i, false));
+      M5.Lcd.print("      ");
+      M5.Lcd.printf("(%4d,%4d)  ", (int)(ceil(calScore(hu, i, true) / 400.0) * 100), (int)(ceil(calScore(hu, i, true) / 200.0) * 100)); 
+      M5.Lcd.printf("(%4d)\n", (int)(ceil(calScore(hu, i, false) / 300.0) * 100));
+    }
   }
 
   return ;
 }
 
-int calScoreLon(int hu, int han, bool isChild) {
+int calScore(int hu, int han, bool isChild) {
   int score = hu * pow(2, han + 2);
   if (isChild == true) {
     score = 4 * score;
@@ -68,14 +90,3 @@ int calScoreLon(int hu, int han, bool isChild) {
 
   return score;
 }
-
-//int calScore_Tsumo(int lonScore) {
-//  score = lonScore / 100;
-//  if (score % 2 == 0) {
-//    
-//  } else {
-//    
-//  }
-//
-//  return score;
-//}
