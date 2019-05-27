@@ -28,7 +28,7 @@ void loop() {
       isHomeButtonState = LOW;
 
       cnt++;
-      if (cnt > 10) {
+      if (cnt > 9) {
        cnt = 0;
       }
       displayScore(20 + cnt * 10);
@@ -41,7 +41,7 @@ void loop() {
       if (cnt == -2) {
         cnt = 0;
       } else if (cnt < 0) {
-        cnt = 10;
+        cnt = 9;
       }
       displayScore(20 + cnt * 10);
     }
