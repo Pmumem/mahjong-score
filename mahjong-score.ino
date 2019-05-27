@@ -3,6 +3,10 @@
 void displayScore(int hu);
 int calScore(int hu, int han, bool isChild);
 
+int cnt = -1;
+bool isHomeButtonState = HIGH;
+bool isRstButtonState = HIGH;
+
 void setup() {
   // put your setup code here, to run once:
   M5.begin();
@@ -17,33 +21,33 @@ void setup() {
   pinMode(M5_BUTTON_RST, INPUT);
 }
 
-int cnt = 0;
-bool oldState = HIGH;
-bool currentState = HIGH;
-
 void loop() {
   // put your main code here, to run repeatedly:
   if (digitalRead(M5_BUTTON_HOME) == LOW) {
-    currentState = LOW;
-    if (oldState == HIGH) {
-      displayScore(20 + cnt * 10);
+    if (isHomeButtonState == HIGH) {
+      isHomeButtonState = LOW;
+
       cnt++;
       if (cnt > 10) {
        cnt = 0;
       }
-      oldState = LOW;
+      displayScore(20 + cnt * 10);
+    }
+  } else if (digitalRead(M5_BUTTON_RST) == LOW) {
+    if (isRstButtonState == HIGH) {
+      isRstButtonState = LOW;
+
+      cnt--;
+      if (cnt == -2) {
+        cnt = 0;
+      } else if (cnt < 0) {
+        cnt = 10;
+      }
+      displayScore(20 + cnt * 10);
     }
   } else {
-    oldState = HIGH;
-  }
-  if (digitalRead(M5_BUTTON_RST) == LOW) {
-    cnt = 0;
-    M5.Lcd.fillScreen(BLACK);
-    M5.Lcd.setCursor(0, 2);
-    M5.Lcd.printf("\n\n\n          Mahjong\n");
-    M5.Lcd.printf("           Score\n\n\n");
-    M5.Lcd.print("     PRESS HOME BUTTON");
-    
+    isHomeButtonState = HIGH;
+    isRstButtonState = HIGH;
   }
 }
 
