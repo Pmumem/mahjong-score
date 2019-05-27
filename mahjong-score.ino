@@ -15,7 +15,7 @@ void setup() {
   M5.Lcd.setTextSize(1);
   M5.Lcd.printf("\n\n\n          Mahjong\n");
   M5.Lcd.printf("           Score\n\n\n");
-  M5.Lcd.print("     PRESS HOME BUTTON");
+  M5.Lcd.print("      PRESS ANY BUTTON");
 
   pinMode(M5_BUTTON_HOME, INPUT);
   pinMode(M5_BUTTON_RST, INPUT);
